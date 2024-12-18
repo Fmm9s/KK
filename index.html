@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء عصابة - مدينة سايبر ستي</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #f0f0f0, #d9d9d9);
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #c0392b;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        h2 {
+            color: #e67e22;
+            margin-top: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        form {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            text-align: left;
+            color: #333;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            background-color: #c0392b;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1em;
+        }
+        button:hover {
+            background-color: #a93226;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #27ae60;
+        }
+        .admin-section {
+            margin-top: 40px;
+        }
+        .requests {
+            display: none;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .request-item {
+            background-color: #f9f9f9;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .request-item h4 {
+            margin: 0;
+            color: #e67e22;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>إنشاء عصابة - مدينة سايبر ستي</h1>
+    <p>مرحبًا بك في أول ميزة من نوعها في السيرفرات! هذه نقلة نوعية مختلفة، حيث يمكنك الآن إنشاء عصابتك الخاصة بكل سهولة. انطلق وكن جزءًا من هذه التجربة الفريدة!</p>
+    
+    <form id="gangForm">
+        <label for="gangName">اسم العصابة:</label>
+        <input type="text" id="gangName" name="gangName" required>
+
+        <label for="userName">اسمك:</label>
+        <input type="text" id="userName" name="userName" required>
+
+        <label for="idNumber">رقم الهوية:</label>
+        <input type="text" id="idNumber" name="idNumber" required>
+
+        <label for="membersCount">عدد الأشخاص في العصابة (بين 4 و 6):</label>
+        <input type="number" id="membersCount" name="membersCount" required min="4" max="6">
+
+        <label for="gangColor">لون العصابة:</label>
+        <input type="text" id="gangColor" name="gangColor" required>
+
+        <label for="location">حدد مكان العصابة في الخريطة:</label>
+        <input type="text" id="location" name="location" required>
+
+        <button type="submit">تقديم الطلب</button>
+    </form>
+
+    <div id="message"></div>
+
+    <div class="admin-section">
+        <h2>دخول الإدارة</h2>
+        <form id="adminForm">
+            <label for="adminPassword">كلمة المرور:</label>
+            <input type="password" id="adminPassword" name="adminPassword" required>
+            <button type="submit">دخول</button>
+        </form>
+        <div class="requests" id="requests">
+            <h3>طلبات فتح العصابات:</h3>
+            <ul id="requestsList"></ul>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2023 مدينة سايبر ستي. جميع الحقوق محفوظة.
+    </footer>
+
+    <script>
+        const requests = [];
+
+        document.getElementById('gangForm').onsubmit = function(event) {
+            event.preventDefault();
+            const gangName = document.getElementById('gangName').value;
+            const userName = document.getElementById('userName').value;
+            const idNumber = document.getElementById('idNumber').value;
+            const membersCount = document.getElementById('membersCount').value;
+            const gangColor = document.getElementById('gangColor').value;
+            const location = document.getElementById('location').value;
+
+            // التحقق من عدد الأعضاء
+            if (membersCount < 4 || membersCount > 6) {
+                alert("عدد الأشخاص في العصابة يجب أن يكون بين 4 و 6.");
+                return;
+            }
+
+            // إضافة الطلب إلى القائمة
+            requests.push({ gangName, userName, idNumber, membersCount, gangColor, location, status: 'pending' });
+            document.getElementById('message').innerText = "تم تقديم الطلب، يرجى الانتظار حتى تراجعه الإدارة.";
+            document.getElementById('gangForm').reset(); // إعادة تعيين النموذج
+        };
+
+        document.getElementById('adminForm').onsubmit = function(event) {
+            event.preventDefault();
+            const password = document.getElementById('adminPassword').value;
+            if (password === 'Ha188033') {
+                const requestsList = document.getElementById('requestsList');
+                requestsList.innerHTML = ''; // مسح القائمة السابقة
+                requests.forEach((request, index) => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'request-item';
+                    listItem.innerHTML = `
+                        <h4>اسم العصابة: ${request.gangName}</h4>
+                        <p>اسم المقدم: ${request.userName}</p>
+                        <p>رقم الهوية: ${request.idNumber}</p>
+                        <p>عدد الأعضاء: ${request.membersCount}</p>
+                        <p>لون العصابة: ${request.gangColor}</p>
+                        <p>الموقع: ${request.location}</p>
+                        <button onclick="approveRequest(${index})">موافقة</button>
+                        <button onclick="rejectRequest(${index})">رفض</button>
+                    `;
+                    requestsList.appendChild(listItem);
+                });
+                document.getElementById('requests').style.display = 'block';
+            } else {
+                alert("كلمة المرور غير صحيحة.");
+            }
+        };
+
+        function approveRequest(index) {
+            requests[index].status = 'approved';
+            alert(`تمت الموافقة على طلب العصابة: ${requests[index].gangName}`);
+        }
+
+        function rejectRequest(index) {
+            requests[index].status = 'rejected';
+            alert(`تم رفض طلب العصابة: ${requests[index].gangName}`);
+        }
+    </script>
+</body>
+</html>
